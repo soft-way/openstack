@@ -92,8 +92,3 @@ osd node: compute-01/compute-02/compute-03/compute-04
 9. Add pool for cinder volume
   ceph osd pool create volumes 128
   
-
-
-
-
-   
