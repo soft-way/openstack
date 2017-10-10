@@ -1,0 +1,99 @@
+Setup CEPH for OpenStack (CentOS 7) - Simple Guide
+
+mon node: pike-c7
+osd node: compute-01/compute-02/compute-03/compute-04
+
+1. Recompile ceph-deploy package (In order to fix package dependency issue)
+    cd ~/
+    wget http://download.ceph.com/rpm-jewel/el7/SRPMS/ceph-deploy-1.5.39-0.src.rpm
+    rpm -i ceph-deploy-1.5.39-0.src.rpm
+    ### remove dependency
+    ### delete below two lines from SPECS/ceph-deploy.spec
+        BuildRequires:  python-distribute
+        Requires:       python-distribute
+    rpmbuild -bb ~/rpmbuild/SPECS/ceph-deploy.spec
+    Then install rpm ~/rpmbuild/RPMS/noarch/ceph-deploy-1.5.39-0.noarch.rpm
+
+2. Set local repository
+            rsync -avSHP --delete \
+            --include 'keys/***' \
+            --include 'rpm-jewel/' \
+            --include 'rpm-jewel/el7/' \
+            --include 'rpm-jewel/el7/SRPMS/***' \
+            --include 'rpm-jewel/el7/noarch/***' \
+            --exclude 'rpm-jewel/el7/x86_64/ceph-debuginfo*' \
+            --include 'rpm-jewel/el7/x86_64/***' \
+            --exclude '*' eu.ceph.com::ceph /share/mirrors/ceph
+
+3. Set webserver and env
+    ### set webserver link to /share/mirrors/ceph, then set below into env
+    export CEPH_DEPLOY_REPO_URL=http://10.0.0.101/share/mirrors/ceph/rpm-jewel/el7
+    export CEPH_DEPLOY_GPG_URL=http://10.0.0.101/share/mirrors/ceph/keys/release.asc
+
+4. Ceph Deploy node (run below in each ceph node, include deploy node)
+    ### Add ceph user and group
+    groupadd -g 2000 ceph
+    useradd --gid 2000 -u 2000 ceph
+    passwd ceph
+
+    ### Change sudo
+    echo "ceph ALL = (root) NOPASSWD:ALL" | tee /etc/sudoers.d/ceph
+    sudo chmod 0440 /etc/sudoers.d/ceph
+    
+    ### generate key pair for ceph user and make sure deploy node can ssh to all node without password
+
+5. Install Ceph
+   su - ceph
+   ceph-deploy install pike-c7 compute-01 compute-02 compute-03 compute-04
+   
+6. Create cluster
+   su - ceph
+   mkdir ~/my-cluster
+   cd ~/my-cluster
+   ceph-deploy new pike-c7
+   vi ~/my-cluster/ceph.conf
+    
+  [global]
+  fsid = b6e97fa8-40c6-4142-8e48-bb2e7ace3246
+  mon_initial_members = pike-c7
+  mon_host = 10.0.0.102
+
+  auth_cluster_required = none
+  auth_service_required = none
+  auth_client_required = none
+
+  osd_pool_default_size = 2
+  public_network = 10.0.0.0/24
+
+7. Create mon node
+  workaround issue in ceph-deply script
+  /usr/lib/python2.7/site-packages/ceph_deploy/gatherkeys.py
+  157c157,159
+  <     path_keytype_mon = "%s/keyring" % (dir_keytype_mon)
+  ---
+  >     path_keytype_mon = '/var/lib/ceph/bootstrap-mds/ceph.keyring'
+  >     LOG.info("Original dir %s, path_keytype_mon: %s", dir_keytype_mon, path_keytype_mon)
+  > 
+    
+  ceph-deploy mon create-initial
+  ### check mon status
+  systemctl status ceph-mon@pike-c7.service
+    
+8. Add OSD
+  ceph-deploy osd prepare compute-01:sdb
+  ceph-deploy osd activate compute-01:sdb1
+  ceph-deploy osd prepare compute-02:sdb
+  ceph-deploy osd activate compute-02:sdb1
+  ceph-deploy osd prepare compute-03:sdb
+  ceph-deploy osd activate compute-03:sdb1
+  ceph-deploy osd prepare compute-04:sdb
+  ceph-deploy osd activate compute-05:sdb1
+
+9. Add pool for cinder volume
+  ceph osd pool create volumes 128
+  
+
+
+
+
+   
