@@ -1,0 +1,88 @@
+Setup OpenStack Pike on CentOS 7
+
+Controller: pike-c7
+Computer: compute-08/compute/09/compute-10
+
+1. Update system
+   yum update
+
+2. Create Pike repo
+    vi /etc/yum.repos.d/pike.repo
+    [openstack-pike]
+    name=OpenStack Pike
+    baseurl=http://mirror.centos.org/centos/7/cloud/x86_64/openstack-pike/
+    enabled=1
+    gpgcheck=0
+
+3. Install required package
+    yum install python-openstackclient
+    yum install openstack-selinux
+
+4. Install DB
+    yum install mariadb mariadb-server python2-PyMySQL
+    vi /etc/my.cnf.d/openstack.cnf
+    [mysqld]
+    bind-address = ::
+
+    default-storage-engine = innodb
+    innodb_file_per_table
+    max_connections = 8000
+    collation-server = utf8_general_ci
+    character-set-server = utf8
+    
+    # max open connection
+    # append these two lines to /etc/security/limits.conf
+    mysql hard nofile 65535
+    mysql soft nofile 65535
+    
+    #append this line to /usr/lib/systemd/system/mariadb.service (in the [Service] section)
+    LimitNOFILE=65535
+
+    systemctl enable mariadb.service
+    systemctl restart mariadb.service
+
+    mysql_secure_installation # set root password for local login
+
+5. Install and configure required components
+    yum install rabbitmq-server
+
+    systemctl enable rabbitmq-server.service
+    systemctl restart rabbitmq-server.service
+
+    rabbitmqctl add_user openstack servicepass
+    rabbitmqctl set_permissions openstack ".*" ".*" ".*"
+
+    yum install memcached python-memcached
+
+    systemctl enable memcached.service
+    systemctl restart memcached.service
+
+
+6. Keystone
+    CREATE DATABASE keystone;
+    GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' \
+        IDENTIFIED BY 'servicepass';
+    GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' \
+        IDENTIFIED BY 'servicepass';
+    
+    yum install openstack-keystone httpd mod_wsgi
+    edit /etc/keystone/keystone.conf 
+    [database]
+    connection = mysql+pymysql://keystone:servicepass@pike-c7/keystone
+
+    [token]
+    provider = fernet
+
+    su -s /bin/sh -c "keystone-manage db_sync" keystone
+    keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+    keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+    keystone-manage bootstrap --bootstrap-password servicepass \
+        --bootstrap-admin-url http://pike-c7:35357/v3/ \
+        --bootstrap-internal-url http://pike-c7:35357/v3/ \
+        --bootstrap-public-url http://10.0.0.101:5000/v3/ \
+        --bootstrap-region-id RegionOne
+    ln -s /usr/share/keystone/wsgi-keystone.conf /etc/httpd/conf.d/
+
+    systemctl enable httpd.service
+    systemctl restart httpd.service
