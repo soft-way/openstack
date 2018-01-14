@@ -142,10 +142,13 @@ $ python setup.py bdist_rpm --requires python2-babel >= 2.3.4,python-flask >= 0.
 ```
 # AppendixB
 ### Compile python-zunclient
+```markdown
 $ mkdir -p python-zunclient-0.4.1
 $ cd python-zunclient-0.4.1
 $ git clone -b 0.4.1 https://github.com/openstack/python-zunclient.git .
 $ python setup.py bdist_rpm --requires python2-pbr >= 3.1.1,python-prettytable >= 0.7.2,python2-openstackclient >= 3.12.0,python2-keystoneauth1 >= 3.1.0,python2-osc-lib >= 1.7.0,python2-oslo-i18n >= 3.17,python2-oslo-utils >= 3.28.0,python-websocket-client >= 0.34.0,docker-ce >= 17.09.1,python2-docker >= 2.4.2 --release 1
+
+```
 
 [1]: #appendixa
 [2]: #appendixb
