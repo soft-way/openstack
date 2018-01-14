@@ -85,6 +85,19 @@ auth_type = password
 # systemctl start kuryr-libnetwork
 ```
 
+# Test
+Create docker instance
+```markdown
+Install zun-client, Refer to Appendix B
+# install python-zunclient
+$ openstack appcontainer create --name c01 \
+    --net network=bb001730-8bf8-4b0e-b9cf-c912a2f90251 cirros
+```
+Start docker instance
+```markdown
+$ openstack appcontainer start c01
+```
+
 # AppendixA
 ### Compile kuryr-libnetwork
 ```markdown
@@ -127,8 +140,12 @@ Get dependency from requirements.txt and build rpm
 $ python setup.py bdist_rpm --requires python2-babel >= 2.3.4,python-flask >= 0.10.1,python-ipaddress >= 1.0.16,python-jsonschema >= 2.3.0,python2-kuryr-lib >= 0.6.0,python-neutron-lib >= 1.9.1,python2-os-client-config >= 1.28.0,python2-oslo-concurrency >= 3.21.1,python2-oslo-config >= 4.11.1,python2-oslo-log >= 3.22.0,python2-oslo-utils >= 3.28.0,python2-pbr >= 3.1.1,python2-neutronclient >= 6.3.0,python2-six >= 1.10.0,python2-docker >= 2.4.2 --release 1 --pre-install rpm/preinst.sh
 
 ```
+# AppendixB
+### Compile python-zunclient
+$ mkdir -p python-zunclient-0.4.1
+$ cd python-zunclient-0.4.1
+$ git clone -b 0.4.1 https://github.com/openstack/python-zunclient.git .
+$ python setup.py bdist_rpm --requires python2-pbr >= 3.1.1,python-prettytable >= 0.7.2,python2-openstackclient >= 3.12.0,python2-keystoneauth1 >= 3.1.0,python2-osc-lib >= 1.7.0,python2-oslo-i18n >= 3.17,python2-oslo-utils >= 3.28.0,python-websocket-client >= 0.34.0,docker-ce >= 17.09.1,python2-docker >= 2.4.2 --release 1
 
 [1]: #appendixa
 [2]: #appendixb
-[3]: #appendixc
-[4]: #appendixd
