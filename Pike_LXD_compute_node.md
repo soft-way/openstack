@@ -2,13 +2,12 @@
 This doc is applied to Pike on CentOS 7. But I think it is also workable on other version.
 
 ## Install compute node
-Just follow official Pike document
-https://docs.openstack.org/nova/pike/install/compute-install-rdo.html
+Just follow official Pike document [compute install](https://docs.openstack.org/nova/pike/install/compute-install-rdo.html)
 
 ## Upgrade OS
-Follow doc https://www.tecmint.com/install-upgrade-kernel-version-in-centos-7/
+Follow doc [install upgrade kernel version in centos 7](https://www.tecmint.com/install-upgrade-kernel-version-in-centos-7/)
 
-Here, I downloaded 4.14.12 related rpms as local RPM repo. From this mirror: http://mirror.rackspace.com/elrepo/kernel/el7/x86_64/RPMS/
+Here, I downloaded 4.14.12 related rpms as local RPM repo. From this [mirror] (http://mirror.rackspace.com/elrepo/kernel/el7/x86_64/RPMS/)
 Then,
 
 \# yum install kernel-ml
@@ -24,12 +23,16 @@ Then,
 \# uname -a
 
 ## install zfs
-Compile zfs from source refer to Appendix, then put zfs rpms into local repo.
+Compile zfs from source refer to [Appendix A][A], then put zfs rpms into repo local server (Appendix B).
+
+You can also put repo into [bintray](https://www.bintray.com) for global access. Refer to Appendix C
+
+Here, I just use local repo.
 
 \# yum install zfs
 
 ## Install LXD package
-Compile pylxd, nova-lxd, nova-compute-lxd, lxc, lxd and lxd-client from source refer to Appendix, then put rpms into local repo.
+Compile pylxd, nova-lxd, nova-compute-lxd, lxc, lxd and lxd-client from source refer to Appendix D, then put rpms repo local or https://www.bintray.com
 
 \# yum install pylxd nova-lxd lxd lxd-client nova-compute-lxd
 
@@ -80,7 +83,7 @@ pool = lxd
 \# systemctl enable openstack-nova-compute.service
 
 
-Appendix
+[A] # Appendix A
 ## Compile LXD
 \# ./configure --enable-lua --enable-doc --enable-api-docs
 
