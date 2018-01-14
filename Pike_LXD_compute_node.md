@@ -23,16 +23,16 @@ Then,
 \# uname -a
 
 ## install zfs
-Compile zfs from source refer to [AppendixA][1], then put zfs rpms into repo local server (Appendix B).
+Compile zfs from source refer to [AppendixA][1], then put zfs rpms into repo local server [AppendixB][2].
 
-You can also put repo into [bintray](https://www.bintray.com) for global access. Refer to Appendix C
+You can also put repo into [bintray](https://www.bintray.com) for global access. Refer to [AppendixC][3]
 
 Here, I just use local repo.
 
 \# yum install zfs
 
 ## Install LXD package
-Compile pylxd, nova-lxd, nova-compute-lxd, lxc, lxd and lxd-client from source refer to Appendix D, then put rpms repo local or https://www.bintray.com
+Compile pylxd, nova-lxd, nova-compute-lxd, lxc, lxd and lxd-client from source refer to [AppendixD][4], then put rpms repo local or https://www.bintray.com
 
 \# yum install pylxd nova-lxd lxd lxd-client nova-compute-lxd
 
@@ -83,9 +83,17 @@ pool = lxd
 \# systemctl enable openstack-nova-compute.service
 
 
-# AppendixA
-## Compile LXD
+## AppendixA
+### Compile LXD
 \# ./configure --enable-lua --enable-doc --enable-api-docs
+## AppendixB
+### Local Repo
+# AppendixC
+# AppendixD
 
 [1]: #AppendixA
+[2]: #AppendixB
+[3]: #AppendixC
+[4]: #AppendixD
+
 
