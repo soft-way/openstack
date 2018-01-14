@@ -1,5 +1,5 @@
-# Configuration compute node for LXD
-This doc is applied to Pike on CentOS 7. But I think it is also workable on other versions.
+# Configuration of compute node with LXD
+This doc is applied to Pike on CentOS 7. But I guess it is also workable on other versions.
 
 ## Install compute node
 Just follow official Pike document [compute install](https://docs.openstack.org/nova/pike/install/compute-install-rdo.html) to install compute node.
@@ -22,7 +22,7 @@ Make sure new kernel is ok
 ## Install zfs
 Compile zfs from source refer to [Appendix A][1], then put zfs rpms into repo in local server [Appendix B][2].
 
-You can also put rpms into [bintray](https://www.bintray.com) for global access. Refer to [Appendix C][3]
+The rpms can also be put into [bintray](https://www.bintray.com) for global access. Refer to [Appendix C][3]
 
 Here, I just use local repo.
 
