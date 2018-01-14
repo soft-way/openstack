@@ -21,6 +21,9 @@ $ openstack role add --project service --user kuryr admin
 ```
 ### Install kuryr-libnetwork rpm
  Refer to [Appendix A][1] on how to compile rpm.
+ 
+ The rpms can also be put into [bintray](https://www.bintray.com) for global access. Refer to ![Appendix C](./Pike_LXD_compute_node.md#appendixc) 
+
 ```markdown
 # yum install kuryr-libnetwork
 # vi /etc/kuryr/kuryr.conf
@@ -122,6 +125,7 @@ exit 0
 
 Get dependency from requirements.txt and build rpm
 $ python setup.py bdist_rpm --requires python2-babel >= 2.3.4,python-flask >= 0.10.1,python-ipaddress >= 1.0.16,python-jsonschema >= 2.3.0,python2-kuryr-lib >= 0.6.0,python-neutron-lib >= 1.9.1,python2-os-client-config >= 1.28.0,python2-oslo-concurrency >= 3.21.1,python2-oslo-config >= 4.11.1,python2-oslo-log >= 3.22.0,python2-oslo-utils >= 3.28.0,python2-pbr >= 3.1.1,python2-neutronclient >= 6.3.0,python2-six >= 1.10.0,python2-docker >= 2.4.2 --release 1 --pre-install rpm/preinst.sh
+
 ```
 
 [1]: #appendixa
