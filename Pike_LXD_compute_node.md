@@ -1,4 +1,4 @@
-# Configuration compute node as LXD
+# Configuration compute node for LXD
 This doc is applied to Pike on CentOS 7. But I think it is also workable on other versions.
 
 ## Install compute node
