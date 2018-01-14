@@ -68,6 +68,16 @@ pool = lxd
 # systemctl start openstack-nova-compute.service
 # systemctl enable openstack-nova-compute.service
 ```
+
+# Test
+```markdown
+Upload image into glance
+
+$ nova boot --flavor lxc.medium --image lxc_ubuntu_12.04 test-lxc \
+    --nic net-id=5dabf24b-07e3-4950-9093-22e8d8ebbbec \
+    --availability-zone nova --key-name my
+```
+
 ## AppendixA
 ### Compile zfs
 ```markdown
