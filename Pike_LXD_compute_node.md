@@ -1,31 +1,26 @@
 # Configuration compute node as LXD
-This doc is applied to Pike on CentOS 7. But I think it is also workable on other version.
+This doc is applied to Pike on CentOS 7. But I think it is also workable on other versions.
 
 ## Install compute node
-Just follow official Pike document [compute install](https://docs.openstack.org/nova/pike/install/compute-install-rdo.html)
+Just follow official Pike document [compute install](https://docs.openstack.org/nova/pike/install/compute-install-rdo.html) to install compute node.
 
 ## Upgrade OS
 Follow doc [install upgrade kernel version in centos 7](https://www.tecmint.com/install-upgrade-kernel-version-in-centos-7/)
 
-Here, I downloaded 4.14.12 related rpms as local RPM repo. From this [mirror] (http://mirror.rackspace.com/elrepo/kernel/el7/x86_64/RPMS/)
-Then,
+Here, I downloaded 4.14.12 related rpms as local RPM repo. From [here](http://mirror.rackspace.com/elrepo/kernel/el7/x86_64/RPMS/) Then,
 ```markdown
 # yum install kernel-ml
-```
-### set system boot to new kernel by default
-```markdown
-# sed -i 's/GRUB_DEFAULT=.*/GRUB_DEFAULT=0/g' /etc/default/grub
+
+Set system boot to new kernel by default
+# sed -i 's/GRUB_DEFAULT=.\*/GRUB_DEFAULT=0/g' /etc/default/grub
 # grub2-mkconfig -o /boot/grub2/grub.cfg
 # reboot
-```
-
-### make sure new kernel is ok
-```markdown
+Make sure new kernel is ok
 # uname -a
 ```
 
-## install zfs
-Compile zfs from source refer to [Appendix A][1], then put zfs rpms into repo local server [Appendix B][2].
+## Install zfs
+Compile zfs from source refer to [Appendix A][1], then put zfs rpms into repo in local server [Appendix B][2].
 
 You can also put repo into [bintray](https://www.bintray.com) for global access. Refer to [Appendix C][3]
 
@@ -35,7 +30,7 @@ Here, I just use local repo.
 # yum install zfs
 ```
 ## Install LXD package
-Compile pylxd, nova-lxd, nova-compute-lxd, lxc, lxd and lxd-client from source refer to [Appendix D][4], then put rpms repo local or https://www.bintray.com
+Compile pylxd, nova-lxd, nova-compute-lxd, lxc, lxd and lxd-client from source refer to [Appendix D][4], then put rpms repo in local server or https://www.bintray.com
 
 ```markdown
 # yum install pylxd nova-lxd lxd lxd-client nova-compute-lxd
