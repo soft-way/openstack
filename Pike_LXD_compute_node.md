@@ -91,7 +91,7 @@ pool = lxd
 # AppendixC
 # AppendixD
 
-[1]: #AppendixA
+[1]: #appendixa
 [2]: #AppendixB
 [3]: #AppendixC
 [4]: #AppendixD
