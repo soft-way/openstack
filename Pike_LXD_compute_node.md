@@ -23,7 +23,7 @@ Then,
 \# uname -a
 
 ## install zfs
-Compile zfs from source refer to [Appendix A][A], then put zfs rpms into repo local server (Appendix B).
+Compile zfs from source refer to [AppendixA][1], then put zfs rpms into repo local server (Appendix B).
 
 You can also put repo into [bintray](https://www.bintray.com) for global access. Refer to Appendix C
 
@@ -83,7 +83,9 @@ pool = lxd
 \# systemctl enable openstack-nova-compute.service
 
 
-[A] # Appendix A
+# AppendixA
 ## Compile LXD
 \# ./configure --enable-lua --enable-doc --enable-api-docs
+
+[1]: #AppendixA
 
