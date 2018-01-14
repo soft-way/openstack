@@ -22,7 +22,7 @@ Make sure new kernel is ok
 ## Install zfs
 Compile zfs from source refer to [Appendix A][1], then put zfs rpms into repo in local server [Appendix B][2].
 
-You can also put repo into [bintray](https://www.bintray.com) for global access. Refer to [Appendix C][3]
+You can also put rpms into [bintray](https://www.bintray.com) for global access. Refer to [Appendix C][3]
 
 Here, I just use local repo.
 
@@ -84,7 +84,7 @@ $ make pkg-utils pkg-kmod
 ```
 ## AppendixB
 ### Local Repo
-copy rpms to local web server, then run "createrepo ." to create local repo
+Copy rpms to local web server, then run "createrepo ." to create local repo
 ```markdown
 vi /etc/yum.repos.d/local.repo
 
@@ -139,7 +139,7 @@ $ make
 ```
 lxc and lxd will be in $GOPATH/bin/lxd, then make rpm package
 
-fetch rpm stuff
+Fetch rpm stuff
 
 ```markdown
 $ mkdir -p $GOPATH/src/github.com/soft-way
